@@ -29,6 +29,10 @@ gem 'microsoft_graph'
 gem 'adal'
 gem 'config'
 
+gem 'httparty'
+gem 'openid_connect'
+
+gem 'activerecord-session_store'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
