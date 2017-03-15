@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   resources :schools, only: :index do
   	member do
   	  get :classes
+      get 'classes/:class_id' => 'schools#class_info'
   	  get :users
   	end
   end
