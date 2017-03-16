@@ -123,6 +123,9 @@ class AccountController < ApplicationController
 		id_token = params["id_token"] 
 
 		if params["admin_consent"] == "True"
+			account = Account.find_by_o365_email(cookies[:o365_login_email])
+			account.is_consent = true
+			account.save
 			redirect_to admin_index_path, notice: 'admin consent success'
 			return 
 		end

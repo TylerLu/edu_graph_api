@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       post :consent
       post :unconsent
       get :linked_accounts
+      post :add_app_role_assignments
       match :unlink_account, via: [:get, :post]
     end
   end
