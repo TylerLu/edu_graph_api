@@ -13,7 +13,7 @@ class AdminController < ApplicationController
   end
 
   def unconsent
-    servicePrincipals = "https://graph.windows.net/canvizEDU.onmicrosoft.com/servicePrincipals/?api-version=beta"
+    servicePrincipals = "https://graph.windows.net/#{Settings.tenant_name}/servicePrincipals/?api-version=beta"
     res = JSON.parse(HTTParty.get(servicePrincipals, headers: {
       "Authorization" => "#{session[:token_type]} #{session[:gwn_access_token]}",
       "Content-Type" => "application/x-www-form-urlencoded"
@@ -21,7 +21,7 @@ class AdminController < ApplicationController
     
     obj = res.find{ |_| _['appId'] == Settings.edu_graph_api.app_id }
     if obj
-      res = HTTParty.delete("https://graph.windows.net/canvizEDU.onmicrosoft.com/servicePrincipals/#{obj['objectId']}?api-version=beta", headers: {
+      res = HTTParty.delete("https://graph.windows.net/#{Settings.tenant_name}/servicePrincipals/#{obj['objectId']}?api-version=beta", headers: {
         "Authorization" => "#{session[:token_type]} #{session[:gwn_access_token]}",
         "Content-Type" => "application/x-www-form-urlencoded"
       })
@@ -39,7 +39,7 @@ class AdminController < ApplicationController
   end
 
   def add_app_role_assignments
-    servicePrincipals = "https://graph.windows.net/canvizEDU.onmicrosoft.com/servicePrincipals/?api-version=beta"
+    servicePrincipals = "https://graph.windows.net/#{Settings.tenant_name}/servicePrincipals/?api-version=beta"
     res = JSON.parse(HTTParty.get(servicePrincipals, headers: {
       "Authorization" => "#{session[:token_type]} #{session[:gwn_access_token]}",
       "Content-Type" => "application/x-www-form-urlencoded"
@@ -51,7 +51,7 @@ class AdminController < ApplicationController
     if obj
       resourceId = obj['objectId']
       resoucreName = obj['displayName']
-      user_url_with_roles = "https://graph.windows.net/canvizEDU.onmicrosoft.com/users?api-version=1.5&$expand=appRoleAssignments"
+      user_url_with_roles = "https://graph.windows.net/#{Settings.tenant_name}/users?api-version=1.5&$expand=appRoleAssignments"
       users = JSON.parse(HTTParty.get(user_url_with_roles, headers: {
         "Authorization" => "#{session[:token_type]} #{session[:gwn_access_token]}",
         "Content-Type" => "application/x-www-form-urlencoded"
@@ -61,7 +61,7 @@ class AdminController < ApplicationController
         # p user['objectId']
         next if user['appRoleAssignments'].find{|_user| _user['resourceId'] == resourceId }
 
-        res = JSON.parse(HTTParty.post("https://graph.windows.net/canvizEDU.onmicrosoft.com/users/#{user['objectId']}/appRoleAssignments?api-version=1.5", headers: {
+        res = JSON.parse(HTTParty.post("https://graph.windows.net/#{Settings.tenant_name}/users/#{user['objectId']}/appRoleAssignments?api-version=1.5", headers: {
           "Authorization" => "#{session[:token_type]} #{session[:gwn_access_token]}",
           "Content-Type" => "application/json"
         }, body: {

@@ -3,8 +3,6 @@ default_password: '111111'
 
 redirect_uri: 'http://localhost:44311/Account/Callback'
 
-redirect_uri_token: 'http://localhost:44311/Account/CallbackToken'
-
 BING_MAP: "Am9chh_4wTOKVFk6uZj0IHylYkAx9ePzBru8kwZ2WgPjQVBkGlcW71hFdWyD-Ci2"
 
 jwks_uri: 'https://login.microsoftonline.com/common/discovery/keys'

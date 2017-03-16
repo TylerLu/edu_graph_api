@@ -1,7 +1,7 @@
 class SchoolsController < ApplicationController
 	def index
 		# 根据access_token 获取登录用户信息
-		@me = JSON.parse HTTParty.get('https://graph.windows.net/canvizEdu.onmicrosoft.com/me?api-version=beta', headers: {
+		@me = JSON.parse HTTParty.get("https://graph.windows.net/#{Settings.tenant_name}/me?api-version=beta", headers: {
 			"Authorization" => "#{session[:token_type]} #{session[:gwn_access_token]}",
 			"Content-Type" => "application/x-www-form-urlencoded"
 		}).body
@@ -27,7 +27,7 @@ class SchoolsController < ApplicationController
 		session[:current_user][:myclasses] = classes
 
 		# 根据access_token 获取schools信息
-		all_schools = JSON.parse(HTTParty.get("https://graph.windows.net/canvizEdu.onmicrosoft.com/administrativeUnits",
+		all_schools = JSON.parse(HTTParty.get("https://graph.windows.net/#{Settings.tenant_name}/administrativeUnits",
 			query: {
 				"api-version" => "beta"
 			},
@@ -83,7 +83,7 @@ class SchoolsController < ApplicationController
 			myclass['extension_fe2174665583431c953114ff7268b7b3_Education_SyncSource_CourseId']
 		end
 
-		res = JSON.parse HTTParty.get("https://graph.windows.net/canvizEdu.onmicrosoft.com/groups?api-version=beta&$filter=extension_fe2174665583431c953114ff7268b7b3_Education_ObjectType%20eq%20'Section'%20and%20extension_fe2174665583431c953114ff7268b7b3_Education_SyncSource_SchoolId%20eq%20'#{school_number}'", headers: {
+		res = JSON.parse HTTParty.get("https://graph.windows.net/#{Settings.tenant_name}/groups?api-version=beta&$filter=extension_fe2174665583431c953114ff7268b7b3_Education_ObjectType%20eq%20'Section'%20and%20extension_fe2174665583431c953114ff7268b7b3_Education_SyncSource_SchoolId%20eq%20'#{school_number}'", headers: {
 			"Authorization" => "#{session[:token_type]} #{session[:gwn_access_token]}",
 			"Content-Type" => "application/x-www-form-urlencoded"
 		}).body
@@ -118,14 +118,14 @@ class SchoolsController < ApplicationController
 
 		# p @items
 
-		@myclass = JSON.parse HTTParty.get("https://graph.windows.net/canvizEDU.onmicrosoft.com/groups/#{class_id}?api-version=beta", headers: {
+		@myclass = JSON.parse HTTParty.get("https://graph.windows.net/#{Settings.tenant_name}/groups/#{class_id}?api-version=beta", headers: {
 			"Authorization" => "#{session[:token_type]} #{session[:gwn_access_token]}",
 			"Content-Type" => "application/x-www-form-urlencoded"
 		}).body		
 
 		# p @myclass
 
-		members = JSON.parse HTTParty.get("https://graph.windows.net/canvizEDU.onmicrosoft.com/groups/#{class_id}/$links/members?api-version=beta", headers: {
+		members = JSON.parse HTTParty.get("https://graph.windows.net/#{Settings.tenant_name}/groups/#{class_id}/$links/members?api-version=beta", headers: {
 			"Authorization" => "#{session[:token_type]} #{session[:gwn_access_token]}",
 			"Content-Type" => "application/x-www-form-urlencoded"
 		}).body
@@ -167,7 +167,7 @@ class SchoolsController < ApplicationController
 			principal: @principal
 		}
 
-		res = JSON.parse(HTTParty.get("https://graph.windows.net/canvizEDU.onmicrosoft.com/administrativeUnits/#{@school_id}/members?api-version=beta", headers: {
+		res = JSON.parse(HTTParty.get("https://graph.windows.net/#{Settings.tenant_name}/administrativeUnits/#{@school_id}/members?api-version=beta", headers: {
 			"Authorization" => "#{session[:token_type]} #{session[:gwn_access_token]}",
 			"Content-Type" => "application/x-www-form-urlencoded"
 		}).body)["value"]
